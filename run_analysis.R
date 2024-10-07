@@ -35,6 +35,10 @@ run_analysis <- function() {
   download.file(proj_url, destfile="Dataset.zip")
   unzip("Dataset.zip")
   
+  #******************************************************************
+  #Step 1.Merges the training and the test sets to create one data set.
+  #******************************************************************
+  
   traindata_x <- read.table(file = "UCI HAR Dataset/train/X_train.txt")
   testdata_x <- read.table(file = "UCI HAR Dataset/test/X_test.txt")
   joined_data  <- rbind(traindata_x, testdata_x) 
@@ -145,7 +149,7 @@ run_analysis <- function() {
   dim(cleandata) ## (10299    68)
   
   
-  
+  #5.1 Making a second tidy data set
   # gather all the data base on the average of the activity and subject
   tidy_data <- cleandata %>%
     group_by(activity, subject) %>%
