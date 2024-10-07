@@ -1,6 +1,4 @@
 
-
-
 ## run_analysis.R
 ## author: Jenkins J B Kollie
 ## 
@@ -12,36 +10,26 @@
 ##
 ## input files: x_train.txt,x_test.txt,y_train.txt,y_test.txt,subject_train.txt,subject_test.txt
 ##              features.txt, activity_labels.txt
-## output files: tidy_average_data.txt, combinedcleaningdata.txt
+## output files: tidy_average_data.txt, tidy_data.txt
 
 
 
 ## re-confirm the cleaning process has been performed and a tidy data file
 
-
-
 run_analysis <- function() {
-  #
-  #########################################################################################
-  ## Step 0: load the required special package: reshape2 (to use melt fuction and dcast function)
-  ##         melt function and dcast function will be used in Step 5
   
-  
-  
-  ## Step 1: Merges the training and the test sets to create one data set
   
   ## Three pairs of data (training and test data sets) need to be merged together
   ## They are: X_train.txt, X_test.txt; (data set)
   ##           y_train.txt, y_test.txt; (label-data set)
   ##           subject_train.txt, subject_test.txt (subject-data set)
   
-  ##   Load libraries
+  ##Load libraries to perform proper analysis. 
+  # I am using tidyr and dplyr instead of Reshape, because reshape is depreciated.
   library(dplyr)
   library(tidyr)
   
-  ## load/read the data sets and then merge the data sets
-  
-  
+  ## load/read the data sets and then merge them
   ####### read and merge data set pair##############
   traindata_x <- read.table(file = "UCI HAR Dataset/train/X_train.txt")
   testdata_x <- read.table(file = "UCI HAR Dataset/test/X_test.txt")
@@ -143,6 +131,7 @@ run_analysis <- function() {
   ##  Firstly, give a column name to the column of the joinsubject data frame (one column data frame)
   colnames(joinsubject) <- "subject"
   
+  
   ##  Combine three working dataframes (joinsubject, joinlabel and joindatanew) into one 
   ##  single data frame via command cbind
   
@@ -152,34 +141,22 @@ run_analysis <- function() {
   dim(cleandata) ## (10299    68)
   
   
-  ##  Optional: produce an output file that is stored the the above 'merged data set with labels'
-  ##            in case it will be useful.
-  
-  write.table(cleandata, "combinedcleandata.txt")
-  
-  ## Step 5: Creates a second, independent tidy data set with the average of each variable
-  ##      for each activity and each subject. 
-  
-  
-  cat("Step5: Creates a independent tidy data set with the average of each variable for each activity and each subject.\n")
-  
-  ## Reshape the data: generate skinny data via melt function
-  ## Melt the cleadata dataset before decasting
   
   # gather all the data base on the average of the activity and subject
   tidy_data <- cleandata %>%
     group_by(activity, subject) %>%
     summarize_all(mean) 
+
+  #created a view to know things works fine
+  View(tidy_data)
     
     
   ## Create a file containing the tidy data set
-  write.table(tidy_data, "tidy_average_data.txt", row.names = F, col.names= T, sep = "\t")
-  
-  
+  write.table(tidy_data, "tidy_data.txt", row.names = F, col.names= T, sep = "\t")
   
 } 
-##function call of run_analysis
-run_analysis()
+
+
 
 
 
