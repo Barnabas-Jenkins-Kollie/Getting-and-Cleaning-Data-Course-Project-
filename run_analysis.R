@@ -156,7 +156,7 @@ run_analysis <- function() {
     
     
   ## Create a file containing the tidy data set
-  write.table(tidy_data, "tidy_data.txt", row.names = F, col.names= T, sep = "\t")
+  write.table(tidy_data, "tidy_data.txt", row.names = FALSE, col.names= TRUE, sep = "\t")
   
 } 
 
