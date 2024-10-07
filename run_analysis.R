@@ -31,6 +31,10 @@ run_analysis <- function() {
   
   ## load/read the data sets and then merge them
   ####### read and merge data set pair##############
+  proj_url <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
+  download.file(proj_url, destfile="Dataset.zip")
+  unzip("Dataset.zip")
+  
   traindata_x <- read.table(file = "UCI HAR Dataset/train/X_train.txt")
   testdata_x <- read.table(file = "UCI HAR Dataset/test/X_test.txt")
   joined_data  <- rbind(traindata_x, testdata_x) 
@@ -155,6 +159,8 @@ run_analysis <- function() {
   write.table(tidy_data, "tidy_data.txt", row.names = F, col.names= T, sep = "\t")
   
 } 
+
+
 
 
 
